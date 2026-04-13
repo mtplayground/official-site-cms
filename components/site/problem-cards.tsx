@@ -34,7 +34,10 @@ export function ProblemCardsSection() {
 
         <div className="grid gap-4 md:grid-cols-3">
           {PROBLEMS.map((problem) => (
-            <article key={problem.title} className="rounded-xl border border-border bg-card p-6 shadow-sm">
+            <article
+              key={problem.title}
+              className="rounded-xl border border-border bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
+            >
               <h4 className="text-lg font-semibold text-foreground">{problem.title}</h4>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{problem.description}</p>
             </article>

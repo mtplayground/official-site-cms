@@ -25,14 +25,14 @@ export async function CtaSection() {
 
   return (
     <section className="px-4 pb-20 sm:px-6">
-      <div className="mx-auto max-w-6xl rounded-2xl border border-border bg-primary p-8 text-primary-foreground shadow-sm md:p-10">
+      <div className="mx-auto max-w-6xl rounded-2xl border border-border bg-primary p-6 text-primary-foreground shadow-sm transition-all duration-300 hover:shadow-lg sm:p-8 md:p-10">
         <h3 className="text-2xl font-semibold tracking-tight sm:text-3xl">{heading}</h3>
         <p className="mt-3 max-w-2xl text-sm text-primary-foreground/90 sm:text-base">{description}</p>
 
         <div className="mt-6">
           <Link
             href="/about"
-            className="inline-flex items-center rounded-md bg-primary-foreground px-4 py-2 text-sm font-semibold text-primary transition-opacity hover:opacity-90"
+            className="inline-flex items-center rounded-md bg-primary-foreground px-4 py-2 text-sm font-semibold text-primary transition-all duration-200 hover:-translate-y-0.5 hover:opacity-90"
           >
             Learn More
           </Link>

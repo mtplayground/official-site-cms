@@ -23,7 +23,7 @@ export async function ShiftSection() {
 
   return (
     <section className="px-4 py-16 sm:px-6">
-      <div className="mx-auto max-w-6xl rounded-2xl border border-border bg-card p-8 shadow-sm md:p-10">
+      <div className="mx-auto max-w-6xl rounded-2xl border border-border bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md sm:p-8 md:p-10">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-700">Strategic Context</p>
         <h2 className="mt-4 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">{heading}</h2>
         <p className="mt-4 max-w-3xl text-base leading-relaxed text-muted-foreground sm:text-lg">{narrative}</p>

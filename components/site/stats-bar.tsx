@@ -41,15 +41,15 @@ export function StatsBar() {
     <section className="px-4 pb-20 sm:px-6">
       <div
         ref={rootRef}
-        className="mx-auto max-w-6xl rounded-xl border border-border bg-card/80 p-4 shadow-sm backdrop-blur sm:p-6"
+        className="mx-auto max-w-6xl rounded-xl border border-border bg-card/80 p-4 shadow-sm backdrop-blur transition-shadow duration-300 hover:shadow-md sm:p-6"
       >
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {STATS.map((item, index) => (
             <div
               key={item.value}
               className={cn(
-                "rounded-lg border border-border bg-background px-4 py-5 transition-all duration-700",
-                isVisible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0",
+                "rounded-lg border border-border bg-background px-4 py-5 transition-all duration-700 motion-reduce:transform-none motion-reduce:transition-none",
+                isVisible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0 motion-reduce:opacity-100",
               )}
               style={{ transitionDelay: `${index * 120}ms` }}
             >

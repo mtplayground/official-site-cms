@@ -17,14 +17,14 @@ export function AdminSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-full border-r border-border bg-card md:min-h-screen md:w-64">
+    <aside className="w-full border-b border-border bg-card md:sticky md:top-0 md:h-screen md:w-64 md:border-b-0 md:border-r">
       <div className="flex h-full flex-col">
-        <div className="border-b border-border px-5 py-4">
+        <div className="border-b border-border px-5 py-4 md:py-5">
           <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Admin</p>
           <p className="text-base font-semibold text-foreground">official-site-cms</p>
         </div>
 
-        <nav className="flex-1 space-y-1 p-3">
+        <nav className="grid grid-cols-2 gap-1 p-3 sm:grid-cols-4 md:flex md:flex-1 md:flex-col md:space-y-1 md:p-3">
           {NAV_ITEMS.map((item) => {
             const isActive = item.href === "/admin" ? pathname === item.href : pathname.startsWith(item.href);
 
@@ -33,7 +33,7 @@ export function AdminSidebar() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "block rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                  "block rounded-md px-3 py-2 text-center text-sm font-medium transition-colors md:text-left",
                   isActive
                     ? "bg-primary text-primary-foreground"
                     : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
@@ -45,7 +45,7 @@ export function AdminSidebar() {
           })}
         </nav>
 
-        <div className="border-t border-border p-3">
+        <div className="border-t border-border p-3 md:mt-auto">
           <LogoutButton className="w-full" />
         </div>
       </div>
