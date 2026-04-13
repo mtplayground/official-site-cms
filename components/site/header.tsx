@@ -1,0 +1,32 @@
+import Link from "next/link";
+
+import { MobileNav } from "@/components/site/mobile-nav";
+
+const NAV_ITEMS = [
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
+  { href: "/blog", label: "Blog" },
+] as const;
+
+export function SiteHeader() {
+  return (
+    <header className="sticky top-0 z-30 border-b border-border/80 bg-background/90 backdrop-blur">
+      <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4 sm:px-6">
+        <Link href="/" className="flex items-baseline gap-2">
+          <span className="text-lg font-semibold tracking-tight text-foreground">myclawteam.ai</span>
+          <span className="text-xs text-muted-foreground">Official Site</span>
+        </Link>
+
+        <nav className="hidden items-center gap-6 md:flex">
+          {NAV_ITEMS.map((item) => (
+            <Link key={item.href} href={item.href} className="text-sm font-medium text-muted-foreground hover:text-foreground">
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
+        <MobileNav />
+      </div>
+    </header>
+  );
+}
