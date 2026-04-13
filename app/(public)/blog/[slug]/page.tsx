@@ -5,6 +5,7 @@ import { PostStatus } from "@prisma/client";
 
 import { db } from "@/lib/db";
 import { estimateReadingTime, formatBlogDate, markdownToExcerpt } from "@/lib/markdown";
+import { buildBlogPostStructuredData, getSiteUrl } from "@/lib/structured-data";
 import { MarkdownRenderer } from "@/components/site/markdown-renderer";
 
 type BlogPostPageProps = {
@@ -30,6 +31,7 @@ async function getPublishedPostBySlug(slug: string) {
       bodyMarkdown: true,
       coverImageUrl: true,
       publishedAt: true,
+      updatedAt: true,
     },
   });
 }
@@ -46,20 +48,19 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   }
 
   const description = post.excerpt?.trim() || markdownToExcerpt(post.bodyMarkdown);
-  const title = `${post.title} | myclawteam.ai`;
 
   return {
-    title,
+    title: post.title,
     description,
     openGraph: {
-      title,
+      title: post.title,
       description,
       type: "article",
       images: post.coverImageUrl ? [{ url: post.coverImageUrl }] : undefined,
     },
     twitter: {
       card: post.coverImageUrl ? "summary_large_image" : "summary",
-      title,
+      title: post.title,
       description,
       images: post.coverImageUrl ? [post.coverImageUrl] : undefined,
     },
@@ -75,10 +76,24 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   const readingTime = estimateReadingTime(post.bodyMarkdown);
+  const siteUrl = getSiteUrl();
+  const postUrl = `${siteUrl}/blog/${post.slug}`;
+  const description = post.excerpt?.trim() || markdownToExcerpt(post.bodyMarkdown);
+
+  const jsonLd = buildBlogPostStructuredData({
+    title: post.title,
+    description,
+    url: postUrl,
+    publishedAt: post.publishedAt,
+    modifiedAt: post.updatedAt,
+    image: post.coverImageUrl,
+  });
 
   return (
     <main className="px-4 py-16 sm:px-6 sm:py-20">
       <article className="mx-auto max-w-3xl space-y-8">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+
         <header className="space-y-4">
           <Link href="/blog" className="text-sm font-medium text-primary hover:underline">
             ← Back to blog
