@@ -20,3 +20,41 @@ export function resolveAboutContent(record: AboutRecord | null | undefined) {
     bodyMarkdown,
   };
 }
+
+export function estimateReadingTime(markdown: string) {
+  const words = markdown
+    .trim()
+    .replace(/[`*_>#-]/g, " ")
+    .split(/\s+/)
+    .filter(Boolean).length;
+
+  const minutes = Math.max(1, Math.ceil(words / 200));
+  return `${minutes} min read`;
+}
+
+export function formatBlogDate(date: Date) {
+  return new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(date);
+}
+
+export function markdownToExcerpt(markdown: string, maxLength = 160) {
+  const plainText = markdown
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/`[^`]+`/g, " ")
+    .replace(/[#>*_\-\[\]()]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (!plainText) {
+    return "";
+  }
+
+  if (plainText.length <= maxLength) {
+    return plainText;
+  }
+
+  return `${plainText.slice(0, maxLength - 1)}…`;
+}
