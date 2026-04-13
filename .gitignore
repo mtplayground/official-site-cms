@@ -31,6 +31,6 @@ pnpm-debug.log*
 .gitkeep
 
 # Runtime data
-uploads/
+/uploads/
 *.sqlite
 *.sqlite-journal
