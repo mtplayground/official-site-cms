@@ -9,7 +9,7 @@ RUN npm ci
 FROM base AS builder
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV DATABASE_URL=file:./prisma/build.db
-COPY --from=deps /app/node_modules ./node_modules
+COPY --from=builder /app/node_modules ./node_modules
 COPY . .
 RUN npx prisma migrate deploy
 RUN npx prisma generate
