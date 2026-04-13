@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+.next/
+out/
+dist/
+target/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment and local secrets
+.env
+.env.local
+.env.*.local
+.database_url
+.gh_token
+.github_token
+
+# Workspace/system files
+.claude/
+.task_id
+.container_name
+.app_name
+.pipeline-state.json
+.progress
+.gitkeep
+
+# Runtime data
+uploads/
+*.sqlite
+*.sqlite-journal

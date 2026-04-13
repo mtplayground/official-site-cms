@@ -1,0 +1,85 @@
+# official-site-cms Architecture Plan
+
+## 1) Module structure and file organization
+
+- `app/(public)/`
+  - Public routes: `/`, `/about`, `/blog`, `/blog/[slug]`
+  - Public layout and site-wide metadata defaults
+- `app/(admin)/`
+  - Auth route: `/login`
+  - Protected admin routes under `/admin` (dashboard, posts, pages, media)
+- `app/api/`
+  - Auth handler (`auth/[...nextauth]`)
+  - Upload endpoints (`upload`, `uploads/[...path]`)
+- `components/admin/`
+  - Admin-only UI components (sidebar, forms, logout, media list)
+- `components/site/`
+  - Public marketing/blog UI components (header/footer/sections/cards/renderers)
+- `components/ui/`
+  - shadcn/ui shared primitives
+- `actions/`
+  - Server Actions grouped by domain (`posts.ts`, `pages.ts`, later `media.ts` if needed)
+- `lib/`
+  - Shared infrastructure/utilities:
+    - `db.ts` (Prisma singleton)
+    - `auth.ts` + `lib/auth.ts` helpers
+    - `markdown.ts` (render helpers: GFM, reading time, syntax setup)
+    - `structured-data.ts` (JSON-LD builders)
+    - `utils.ts` (shadcn class helpers)
+- `prisma/`
+  - `schema.prisma`, migrations, `seed.ts`
+- root infra/config
+  - `Dockerfile`, `docker-compose.yml`, `.env.example`, `.dockerignore`
+
+## 2) Shared types and data model baseline
+
+Prisma models:
+- `User`: `id`, `email` (unique), `passwordHash`, `role` (`ADMIN`), timestamps
+- `BlogPost`: `id`, `title`, `slug` (unique), `excerpt`, `bodyMarkdown`, `coverImageUrl`, `status` (`DRAFT|PUBLISHED`), `publishedAt`, timestamps
+- `PageContent`: `id`, `slug` (unique: `about`, `landing`), `title`, `bodyMarkdown`, `sectionsJson` (JSON for landing editable blocks), timestamps
+- `Media`: `id`, `filename`, `path`, `mimeType`, `size`, `alt`, timestamps
+
+Type strategy:
+- Keep source-of-truth types in Prisma-generated client.
+- Add lightweight domain DTO types in `lib/types.ts` only for UI forms/view models when Prisma shape should not be exposed directly.
+- Use Zod schemas per form/action (posts/pages/login/upload) for validation and typed error maps.
+
+## 3) Dependencies between issues (execution graph)
+
+Foundation:
+- #1 Next.js scaffold is prerequisite for most work.
+- #2 UI system and #3 Prisma can proceed after #1.
+- #4 Docker and #5 Auth depend on #1 + #3.
+
+Admin/auth chain:
+- #6 login, #7 middleware, #8 admin shell depend on #5.
+- #9 post list/delete depends on #8 + #3.
+- #10 post create/edit depends on #9 + #3.
+- #11 media upload depends on #8 + #3.
+- #12 page content editor depends on #8 + #3.
+
+Public site chain:
+- #13 public layout depends on #1 + #2.
+- #14 and #15 depend on #13 (and should read CMS fallback data shape from #12).
+- #16 About depends on #12 data model + markdown utils.
+- #17 blog listing depends on #10 publish flow.
+- #18 blog detail depends on #10 + markdown renderer.
+- #19 metadata/sitemap/robots depends on #17/#18.
+
+Hardening/finalization:
+- #20 error/loading states should follow route implementation.
+- #21 responsive/polish follows all UI features.
+- #22 seed/docs/deployment finalizes after infra + app features are stable.
+
+## 4) Key design decisions
+
+- Next.js 15 App Router with route groups `(public)` and `(admin)` to separate concerns without URL noise.
+- Server-first rendering for data pages; use client components only for interactive forms/editor UX.
+- Auth.js v5 credentials with Prisma-backed admin user and bcrypt password hashes.
+- Centralized route protection in `middleware.ts` for `/admin/*` with explicit allowlist for `/login` and auth callbacks.
+- Server Actions for admin CRUD to keep write logic co-located and reduce API surface; use API routes only for file upload/serve.
+- Local uploads stored in `/uploads` and indexed in `Media` table; Docker volume mount preserves files.
+- Markdown pipeline shared in `lib/markdown.ts` to avoid duplicate rendering config between About and Blog.
+- CMS fallback policy: public pages render DB content if present, else deterministic defaults from code.
+- SEO as first-class: per-post metadata generation, sitemap from published posts only, robots allow crawl.
+- Keep implementation order strict by issue dependencies to avoid rework between sessions.
