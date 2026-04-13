@@ -32,6 +32,7 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/next.config.ts ./next.config.ts
+COPY .env ./.env
 COPY start.sh ./start.sh
 RUN chmod +x /app/start.sh
 

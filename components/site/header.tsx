@@ -6,6 +6,7 @@ const NAV_ITEMS = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/blog", label: "Blog" },
+  { href: "/login", label: "Login" },
 ] as const;
 
 export function SiteHeader() {
@@ -22,6 +23,7 @@ export function SiteHeader() {
             <Link
               key={item.href}
               href={item.href}
+              prefetch={false}
               className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               {item.label}

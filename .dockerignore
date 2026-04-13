@@ -7,7 +7,6 @@ target/wasm32-unknown-unknown
 node_modules
 .next
 out
-.env
 .env.*
 !.env.example
 data

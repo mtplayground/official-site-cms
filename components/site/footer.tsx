@@ -4,6 +4,7 @@ const FOOTER_LINKS = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/blog", label: "Blog" },
+  { href: "/login", label: "Login" },
 ] as const;
 
 export function SiteFooter() {
@@ -16,7 +17,12 @@ export function SiteFooter() {
 
         <nav className="flex flex-wrap items-center gap-4">
           {FOOTER_LINKS.map((item) => (
-            <Link key={item.href} href={item.href} className="text-sm text-muted-foreground hover:text-foreground">
+            <Link
+              key={item.href}
+              href={item.href}
+              prefetch={false}
+              className="text-sm text-muted-foreground hover:text-foreground"
+            >
               {item.label}
             </Link>
           ))}

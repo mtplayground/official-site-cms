@@ -55,7 +55,9 @@ export function HeroSection() {
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <Button asChild size="lg" className="transition-transform duration-200 hover:-translate-y-0.5">
-              <Link href="/about">Explore The Team</Link>
+              <Link href="/about" prefetch={false}>
+                Explore The Team
+              </Link>
             </Button>
             <Button
               asChild
@@ -63,7 +65,9 @@ export function HeroSection() {
               variant="outline"
               className="transition-colors duration-200 hover:border-brand-500 hover:text-brand-700"
             >
-              <Link href="/blog">Read Insights</Link>
+              <Link href="/blog" prefetch={false}>
+                Read Insights
+              </Link>
             </Button>
           </div>
         </div>
