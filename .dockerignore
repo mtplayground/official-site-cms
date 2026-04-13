@@ -1,26 +1,16 @@
-# Git
 .git
-.gitignore
-
-# Node/Next build artifacts
+.claude
+.gh_token
+.github_token
+target/debug
+target/wasm32-unknown-unknown
 node_modules
 .next
 out
-
-# Local environment and secrets
 .env
 .env.*
 !.env.example
-.gh_token
-.github_token
-
-# Local runtime/state
 data
 uploads
-*.sqlite
-*.sqlite-journal
-
-# Workspace files
-.claude
 .progress
 .plan
