@@ -1,0 +1,20 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: official-site-cms:latest
+    container_name: official-site-cms
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      HOSTNAME: 0.0.0.0
+      PORT: 8080
+      DATABASE_URL: ${DATABASE_URL:-file:/app/data/prod.sqlite}
+    volumes:
+      - ./data:/app/data
+      - ./uploads:/app/uploads
+    restart: unless-stopped
