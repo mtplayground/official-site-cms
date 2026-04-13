@@ -44,12 +44,15 @@ export default async function AdminPostsPage({ searchParams }: PostsPageProps) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-foreground">Blog Posts</h1>
           <p className="text-sm text-muted-foreground">Manage draft and published blog content.</p>
         </div>
-        <Link href="/admin/posts/new" className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">
+        <Link
+          href="/admin/posts/new"
+          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+        >
           New Post
         </Link>
       </div>

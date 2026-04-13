@@ -62,32 +62,34 @@ export default async function PagesIndexPage({ searchParams }: PagesIndexProps) 
       ) : null}
 
       <section className="overflow-hidden rounded-lg border border-border bg-card shadow-sm">
-        <table className="w-full text-left text-sm">
-          <thead className="bg-muted/60 text-muted-foreground">
-            <tr>
-              <th className="px-5 py-3 font-medium">Page</th>
-              <th className="px-5 py-3 font-medium">Last Updated</th>
-              <th className="px-5 py-3 font-medium">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-border">
-            {PAGE_ITEMS.map((item) => {
-              const record = bySlug.get(item.slug);
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[540px] text-left text-sm">
+            <thead className="bg-muted/60 text-muted-foreground">
+              <tr>
+                <th className="px-5 py-3 font-medium">Page</th>
+                <th className="px-5 py-3 font-medium">Last Updated</th>
+                <th className="px-5 py-3 font-medium">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              {PAGE_ITEMS.map((item) => {
+                const record = bySlug.get(item.slug);
 
-              return (
-                <tr key={item.slug}>
-                  <td className="px-5 py-4 font-medium text-foreground">{item.name}</td>
-                  <td className="px-5 py-4 text-muted-foreground">{formatDate(record?.updatedAt ?? null)}</td>
-                  <td className="px-5 py-4">
-                    <Link href={`/admin/pages/${item.slug}/edit`} className="text-sm font-medium text-primary hover:underline">
-                      Edit
-                    </Link>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                return (
+                  <tr key={item.slug}>
+                    <td className="px-5 py-4 font-medium text-foreground">{item.name}</td>
+                    <td className="px-5 py-4 text-muted-foreground">{formatDate(record?.updatedAt ?? null)}</td>
+                    <td className="px-5 py-4">
+                      <Link href={`/admin/pages/${item.slug}/edit`} className="text-sm font-medium text-primary hover:underline">
+                        Edit
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </section>
     </div>
   );
