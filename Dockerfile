@@ -9,7 +9,7 @@ RUN npm ci
 FROM base AS builder
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV DATABASE_URL=file:./prisma/build.db
-COPY --from=builder /app/node_modules ./node_modules
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npx prisma migrate deploy
 RUN npx prisma generate
@@ -26,7 +26,7 @@ ENV HOSTNAME=0.0.0.0
 ENV PORT=8080
 ENV DATABASE_URL=file:/app/data/prod.sqlite
 
-COPY --from=deps /app/node_modules ./node_modules
+COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/prisma ./prisma
